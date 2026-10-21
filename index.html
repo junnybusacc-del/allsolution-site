@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>All Solution – Escritório, Informática e Livros Digitais</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="wrap nav">
+<a class="logo" href="#topo">All<span>Solution</span></a>
+<nav><a href="#loja">Loja</a><a href="#livros">Livros digitais</a><a href="#sobre">Sobre</a><a href="#contacto">Contacto</a></nav>
+<button class="cartbtn" id="open" aria-label="Abrir carrinho"> Carrinho<span id="count">0</span></button>
+<button class="cartbtn burger" id="burger" aria-label="Abrir menu">Menu</button>
+</div></header>
+
+<main class="wrap" id="topo">
+<section class="hero-banner">
+<img src="imagens/banner.jpg" alt="All Solution - Tudo em Informática e Mais. Venda de material informático, acessórios e assistência técnica em Moçambique">
+<div class="cta"><button class="btn" onclick="location.hash='#loja'">Explorar produtos</button><button class="btn ghost" onclick="location.hash='#livros'">Descobrir autores</button></div>
+</section>
+
+<div class="perks">
+<div class="perk"><b>Entregas em Moçambique</b>Gaza, Maputo, Matola, Beira, Nampula e outras províncias</div>
+<div class="perk"><b>Entrega digital</b>Livros e software digitais</div>
+<div class="perk"><b>Autores emergentes</b>Apoie quem está a começar</div>
+<div class="perk"><b>Pagamento móvel</b>M-Pesa, e-Mola e mKesh</div>
+</div>
+
+<section id="loja">
+<h2>Loja</h2>
+<p class="sub">Filtre por tipo ou procure pelo nome.</p>
+<div class="tools" id="chips"></div>
+<input type="search" id="q" placeholder="Pesquisar produtos…" aria-label="Pesquisar">
+<div class="grid" id="grid" style="margin-top:18px"></div>
+</section>
+
+<section id="livros">
+<h2>Livros de autores independentes</h2>
+<p class="sub">Histórias e conhecimento de vozes novas. Formato digital (ePub/PDF).</p>
+<div class="grid" id="books"></div>
+</section>
+
+<section id="sobre" class="about" style="margin-top:50px">
+<div><h2 style="margin-top:0">Sobre a All Solution</h2>
+<p>Começámos com uma ideia simples: reunir num só sítio o que profissionais, estudantes e equipas precisam — do bloco de notas ao software de produtividade.</p></div>
+<div><h2 style="margin-top:0">Porquê autores pouco conhecidos?</h2>
+<p>Acreditamos que há grandes livros fora dos grandes circuitos. Cada título digital é selecionado por nós e a maior parte do valor reverte para o autor.</p></div>
+</section>
+
+<section id="contacto" class="contact">
+<div><h2>Fale connosco</h2><p class="sub">Responderemos em 1 dia útil.</p><p>Gaza, Moçambique<br>Telefone / WhatsApp: +258 87 688 9310<br>Email: <a href="mailto:junnybusacc@gmail.com">junnybusacc@gmail.com</a><br>Seg–Sex 8h–17h · Sáb 8h–12h (CAT)</p></div>
+<form id="form"><input type="text" placeholder="Nome" required><input type="email" placeholder="Email" required><textarea rows="4" placeholder="Mensagem" required></textarea><button class="btn" type="submit">Enviar mensagem</button></form>
+</section>
+</main>
+
+<footer><div class="wrap">© <span id="y"></span> All Solution · Material Informatico & Digital· Gaza, Moçambique · NUIT: 0901088956</div></footer>
+
+<div class="backdrop" id="backdrop"></div>
+<aside class="drawer" id="drawer" aria-label="Carrinho">
+<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Carrinho</h2><button class="cartbtn" id="close">Fechar</button></div>
+<div class="items" id="items"></div>
+<div class="row" style="border:0"><b>Total</b><b id="total">0,00 MT</b></div>
+<input type="text" id="cname" placeholder="O seu nome" autocomplete="name">
+<input type="text" id="caddr" placeholder="Local de entrega (cidade e bairro)">
+<small class="sub">O pedido é enviado por WhatsApp. O pagamento combina-se por M-Pesa, e-Mola, mKesh ou transferência bancária. Preços em MT, IVA incluído.</small>
+<button class="btn" id="checkout">Enviar pedido por WhatsApp</button>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script>
+const P=[
+{id:1,n:"Caderno A5 Premium",c:"Escritório",t:"fisico",p:490,e:"",g:["#fde68a","#f59e0b"],d:"Capa dura, 160 páginas"},
+{id:2,n:"Conjunto de Canetas Gel (12)",c:"Escritório",t:"fisico",p:600,e:"",g:["#bfdbfe","#3b82f6"],d:"Tinta de secagem rápida"},
+{id:3,n:"Organizador de Secretária",c:"Escritório",t:"fisico",p:1400,e:"",g:["#bbf7d0","#16a34a"],d:"Madeira e metal, 5 compartimentos"},
+{id:4,n:"Rato Ergonómico Sem Fios",c:"Informática",t:"fisico",p:1750,e:"",g:["#e9d5ff","#9333ea"],d:"Bluetooth, bateria 6 meses"},
+{id:5,n:"Teclado Mecânico Compacto",c:"Informática",t:"fisico",p:4200,e:"",g:["#fecaca","#ef4444"],d:"Layout PT, switches silenciosos"},
+{id:6,n:"Hub USB-C 7 em 1",c:"Informática",t:"fisico",p:2450,e:"",g:["#a5f3fc","#0891b2"],d:"HDMI 4K, USB 3.0, leitor SD"},
+{id:7,n:"Suporte Ajustável para Portátil",c:"Informática",t:"fisico",p:1580,e:"",g:["#ddd6fe","#6366f1"],d:"Alumínio, dobrável"},
+{id:8,n:"Pack Modelos de Folhas de Cálculo",c:"Ferramentas digitais",t:"digital",p:850,e:"",g:["#bbf7d0","#059669"],d:"30 modelos para gestão e orçamentos"},
+{id:9,n:"Licença Gestor de Tarefas Pro (1 ano)",c:"Ferramentas digitais",t:"digital",p:2000,e:"",g:["#fed7aa","#ea580c"],d:"Chave de ativação por email"},
+{id:10,n:"Kit de Modelos de Fatura e Orçamento",c:"Ferramentas digitais",t:"digital",p:700,e:"",g:["#fbcfe8","#db2777"],d:"Word, Excel e PDF editável"},
+{id:11,n:"Magia das Marés",c:"Livros digitais",t:"digital",p:350,e:"",g:["#bae6fd","#0284c7"],d:"Romance · Pascale Lacelle",a:"Pascale Lacelle"},
+{id:12,n:"O Último Autocarro para Lugar Nenhum",c:"Livros digitais",t:"digital",p:280,e:"",g:["#fde68a","#d97706"],d:"Contos · Rui Matoso",a:"Rui Matoso"},
+{id:13,n:"Código e Café: Programar Sem Medo",c:"Livros digitais",t:"digital",p:450,e:"",g:["#d9f99d","#65a30d"],d:"Guia para iniciantes · Sofia Lamego",a:"Sofia Lamego"},
+{id:14,n:"Somente Quem Carrega Cicatrizes",c:"Livros digitais",t:"digital",p:320,e:"",g:["#fecdd3","#e11d48"],d:"Romance ·  T. T. Zeller",a:" T. T. Zeller"},
+{id:15,n:"O Que Ficou Depois Dele",c:"Livros digitais",t:"digital",p:390,e:"",g:["#a7f3d0","#10b981"],d:"Romance Psicologico · T. T. Zeller",a:" T. T. Zeller"}
+];
+const cats=["Todos","Escritório","Informática","Ferramentas digitais","Livros digitais"];
+let cat="Todos",cart={};
+const $=s=>document.querySelector(s),eur=v=>v.toLocaleString("pt-PT",{minimumFractionDigits:2,maximumFractionDigits:2})+" MT";
+function card(p){return `<article class="card reveal"><div class="thumb" style="background:linear-gradient(135deg,${p.g[0]},${p.g[1]})"><img src="imagens/produto-${p.id}.jpg" alt="${p.n}" loading="lazy" onerror="this.remove()"></div><div class="body"><span class="tag">${p.c} · ${p.t==="digital"?"Digital":"Físico"}</span><h3>${p.n}</h3><small>${p.d}</small><div class="foot"><span class="price">${eur(p.p)}</span><button class="btn" data-add="${p.id}">Adicionar</button></div></div></article>`}
+function render(){
+ const q=$("#q").value.trim().toLowerCase();
+ const list=P.filter(p=>(cat==="Todos"||p.c===cat)&&(p.n+p.d+p.c).toLowerCase().includes(q));
+ $("#grid").innerHTML=list.length?list.map(card).join(""):"<p class='sub'>Sem resultados.</p>";
+ $("#chips").innerHTML=cats.map(c=>`<button class="chip ${c===cat?"on":""}" data-cat="${c}">${c}</button>`).join("");
+}
+function renderCart(){
+ const ids=Object.keys(cart);
+ $("#items").innerHTML=ids.length?ids.map(id=>{const p=P.find(x=>x.id==id),n=cart[id];return `<div class="row"><div>${p.n}<br><small>${eur(p.p)}</small></div><div class="qty"><button data-dec="${id}">−</button> ${n} <button data-add="${id}">+</button></div></div>`}).join(""):"<p class='sub'>O carrinho está vazio.</p>";
+ const tot=ids.reduce((s,id)=>s+P.find(x=>x.id==id).p*cart[id],0);
+ $("#total").textContent=eur(tot);
+ $("#count").textContent=ids.reduce((s,id)=>s+cart[id],0);
+}
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)}
+document.addEventListener("click",e=>{
+ const t=e.target;
+ if(t.dataset.add){cart[t.dataset.add]=(cart[t.dataset.add]||0)+1;renderCart();toast("Adicionado ao carrinho")}
+ if(t.dataset.dec){const id=t.dataset.dec;if(--cart[id]<=0)delete cart[id];renderCart()}
+ if(t.dataset.cat){cat=t.dataset.cat;render()}
+});
+$("#q").addEventListener("input",render);
+$("#open").onclick=()=>$("#drawer").classList.add("open");
+$("#close").onclick=()=>$("#drawer").classList.remove("open");
+$("#burger").onclick=()=>document.querySelector("nav").classList.toggle("open");
+document.querySelectorAll("nav a").forEach(a=>a.addEventListener("click",()=>document.querySelector("nav").classList.remove("open")));
+$("#checkout").onclick=()=>{
+ const ids=Object.keys(cart);
+ if(!ids.length)return toast("O carrinho está vazio");
+ const nome=$("#cname").value.trim(),loc=$("#caddr").value.trim();
+ if(!nome)return toast("Indique o seu nome");
+ let m="Olá, All Solution! Gostaria de fazer o seguinte pedido:\n\n";
+ ids.forEach(id=>{const p=P.find(x=>x.id==id);m+=`${cart[id]}x ${p.n} - ${eur(p.p*cart[id])}\n`});
+ m+=`\nTotal: ${$("#total").textContent}\nNome: ${nome}\n`+(loc?`Local de entrega: ${loc}\n`:"");
+ window.open("https://wa.me/258876889310?text="+encodeURIComponent(m),"_blank");
+};
+$("#form").onsubmit=e=>{e.preventDefault();const f=e.target;
+ const m=`Olá, All Solution!\nNome: ${f[0].value}\nEmail: ${f[1].value}\n\n${f[2].value}`;
+ window.open("https://wa.me/258876889310?text="+encodeURIComponent(m),"_blank");f.reset()};
+$("#books").innerHTML=P.filter(p=>p.c==="Livros digitais").map(card).join("");
+$("#y").textContent=new Date().getFullYear();
+/* animacoes */
+const io="IntersectionObserver" in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12}):null;
+document.querySelectorAll("section h2,.perk,.about>div,.contact>*").forEach(e=>e.classList.add("reveal"));
+document.querySelectorAll(".perk").forEach((e,i)=>e.style.setProperty("--i",i));
+function reveal(){
+ document.querySelectorAll(".grid").forEach(g=>g.querySelectorAll(".card").forEach((c,i)=>c.style.setProperty("--i",i%8)));
+ document.querySelectorAll(".reveal:not(.in)").forEach(el=>io?io.observe(el):el.classList.add("in"));
+}
+const _render=render;render=function(){_render();reveal()};
+const setCart=o=>{$("#drawer").classList.toggle("open",o);$("#backdrop").classList.toggle("show",o)};
+$("#open").onclick=()=>setCart(true);
+$("#close").onclick=()=>setCart(false);
+$("#backdrop").onclick=()=>setCart(false);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")setCart(false)});
+addEventListener("scroll",()=>document.querySelector("header").classList.toggle("scrolled",scrollY>10),{passive:true});
+document.addEventListener("click",e=>{if(e.target.dataset.add){const c=$("#count");c.classList.remove("bump");void c.offsetWidth;c.classList.add("bump")}});
+render();renderCart();
+</script>
+</body>
+</html>
